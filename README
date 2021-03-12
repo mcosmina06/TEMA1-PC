@@ -1,0 +1,29 @@
+Mandru Cosmina
+323CB
+
+									TEMA 1 - PC
+
+		1. Parsare tabela de routare: Structura tabelei de routare se gaseste in 
+	skel.h, functia read_rtable realizeaza parsarea acesteia. Se citeste din fisierul
+	rtable.txt, linie cu line; fiecare linie o impart dupa spatiu cu strtok. Valorile
+	de prefix, next_hop si mask sunt convertite la uint32_t , utilizant functia convert
+	si htonl.
+		2. Protocolul ARP: Pentru implementarea acestui protocol am realizat 2 functuii:
+	arp_request si arp_reply. Functia arp_request primeste ca parametru best_route si 
+	creaza un pachet de tip request pentru al trimite mai departe. Sunt completate campurile
+	din ether header, mai putin cel de mac al sursei care se seteaza la 0, si cele din header-ul
+	de arp. Functia de arp_reply primeste ca parametru un pachet din care se vor extrage anumite
+	valori uitle in completarea campurilor din noul pachte ce trebuie creat
+		3. Procesul de dirijare: Functi get_best_route realizeaza o cautare liniara in tabela
+	de routare dupa adresa ip si intoarce cea mai specifica intrare din aceasta tabela. In main,
+	in while(1), cu primirea unui pachet se face identificare acestuia prin cele 2 if - uri 
+	principale: se inspecteaza campul ether_type pentru a vedea daca este un pachet de tip IP
+	sau unul ARP. Daca este un pachet de tip ARP, pentru cele de tip request se face un apel la
+	functia de arp_reply iar pentru cele de tip request, se adauga o noua intrare in tabela arp
+	si este parcursa coada pentru a trimite pachetele al carora ip a fost gasit in acesta tabela.
+	Daca este un pachet de tip IP este calculat checksum - ul, verificat si el si ttl, se cauata 
+	cea mai specifica intrare in tabela de routare si daca este gasita se cauta next hop in tabela 
+	arp. In cazul in care nu este gasit pachetul este adaugat in coada si se face un arp_request, 
+	daca nu pachetul este trimis la interfata lui best_route.
+	
+	punctaj local: 90
